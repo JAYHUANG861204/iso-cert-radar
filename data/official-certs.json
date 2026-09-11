@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "source": "數位發展部資通安全署",
+    "title": "資通安全專業證照清單",
+    "version": "115年5月22日修正公布",
+    "updated": "2026-05-22",
+    "totalManagement": 22,
+    "totalTechnical": 84,
+    "note": "本清單為台灣「資通安全專職(責)人員」法定認可證照範圍，非本站原創資料。資料來源：數位發展部資通安全署，定期更新請以官網公告為準。"
+  },
+  "issuers": [
+    {
+      "id": "iaf-iso-bodies",
+      "name": "已簽署 IAF 多邊相互承認協議之認證機構（含 TAF）",
+      "url": "https://www.taftw.org.tw/",
+      "certs": [
+        { "id": "iaf-iso27001-lead-auditor", "category": "management", "abbr": "—", "name": "ISO/IEC 27001:2022 Information Security Management System (ISMS) Auditor/Lead Auditor", "note": "Lead Auditor 相關證照應具有效性，需提供當年度至少 2 次實際參與稽核經驗證明。" },
+        { "id": "iaf-iso22301-lead-auditor", "category": "management", "abbr": "—", "name": "ISO 22301 Business Continuity Management System (BCMS) Auditor/Lead Auditor", "note": "Lead Auditor 相關證照應具有效性，需提供當年度至少 2 次實際參與稽核經驗證明。" },
+        { "id": "iaf-iso27701-lead-auditor", "category": "management", "abbr": "—", "name": "ISO/IEC 27701:2019 Privacy Information Management System Lead Auditor", "note": "Lead Auditor 相關證照應具有效性，需提供當年度至少 2 次實際參與稽核經驗證明。" }
+      ]
+    },
+    {
+      "id": "isc2",
+      "name": "International Information System Security Certification Consortium (ISC2)",
+      "url": "https://www.isc2.org/",
+      "certs": [
+        { "id": "isc2-cissp", "category": "management", "abbr": "CISSP", "name": "Certified Information Systems Security Professional" },
+        { "id": "isc2-issmp", "category": "management", "abbr": "ISSMP", "name": "Information Systems Security Management Professional" },
+        { "id": "isc2-cgrc", "category": "management", "abbr": "CGRC", "name": "Governance, Risk and Compliance Certification" },
+        { "id": "isc2-sscp", "category": "technical", "abbr": "SSCP", "name": "Systems Security Certified Practitioner" },
+        { "id": "isc2-ccsp", "category": "technical", "abbr": "CCSP", "name": "Certified Cloud Security Professional" },
+        { "id": "isc2-csslp", "category": "technical", "abbr": "CSSLP", "name": "Certified Secure Software Lifecycle Professional" },
+        { "id": "isc2-hcispp", "category": "technical", "abbr": "HCISPP", "name": "HealthCare Information Security and Privacy Practitioner", "note": "於 115 年 12 月 1 日（2026-12-01）後停止採認。" },
+        { "id": "isc2-issap", "category": "technical", "abbr": "ISSAP", "name": "Information Systems Security Architecture Professional" },
+        { "id": "isc2-issep", "category": "technical", "abbr": "ISSEP", "name": "Information Systems Security Engineering Professional" }
+      ]
+    },
+    {
+      "id": "comptia",
+      "name": "The Computing Technology Industry Association (CompTIA)",
+      "url": "https://certification.comptia.org/",
+      "certs": [
+        { "id": "comptia-security-plus", "category": "technical", "abbr": "Security+", "name": "CompTIA Security+" },
+        { "id": "comptia-cysa-plus", "category": "technical", "abbr": "CySA+", "name": "CompTIA Cybersecurity Analyst" },
+        { "id": "comptia-securityx", "category": "technical", "abbr": "SecurityX", "name": "CompTIA SecurityX" },
+        { "id": "comptia-pentest-plus", "category": "technical", "abbr": "PenTest+", "name": "CompTIA PenTest+" }
+      ]
+    },
+    {
+      "id": "crest",
+      "name": "CREST",
+      "url": "https://www.crest-approved.org",
+      "certs": [
+        { "id": "crest-cpsa", "category": "technical", "group": "Penetration Testing", "abbr": "CPSA", "name": "The CREST Practitioner Security Analyst" },
+        { "id": "crest-ccrts", "category": "technical", "group": "Penetration Testing", "abbr": "CCRTS", "name": "The CREST Certified Red Team Specialist" },
+        { "id": "crest-ccrtm", "category": "technical", "group": "Penetration Testing", "abbr": "CCRTM", "name": "The CREST Certified Red Team Manager" },
+        { "id": "crest-crtia", "category": "technical", "group": "Threat Intelligence", "abbr": "CRTIA", "name": "The CREST Registered Threat Intelligence Analyst" },
+        { "id": "crest-cctim", "category": "technical", "group": "Threat Intelligence", "abbr": "CCTIM", "name": "The CREST Certified Threat Intelligence Manager" },
+        { "id": "crest-cpia", "category": "technical", "group": "Incident Response", "abbr": "CPIA", "name": "The CREST Practitioner Intrusion Analyst" },
+        { "id": "crest-cria", "category": "technical", "group": "Incident Response", "abbr": "CRIA", "name": "The CREST Registered Intrusion Analyst" },
+        { "id": "crest-ccim", "category": "technical", "group": "Incident Response", "abbr": "CCIM", "name": "The CREST Certified Incident Manager" }
+      ]
+    },
+    {
+      "id": "ec-council",
+      "name": "EC-Council",
+      "url": "https://www.eccouncil.org/",
+      "certs": [
+        { "id": "eccouncil-cciso", "category": "management", "abbr": "CCISO", "name": "Certified Chief Information Security Officer" },
+        { "id": "eccouncil-associate-cciso", "category": "management", "abbr": "Associate CCISO", "name": "Associate Certified Chief Information Security Officer" },
+        { "id": "eccouncil-cnd", "category": "technical", "abbr": "CND", "name": "Certified Network Defender Course" },
+        { "id": "eccouncil-ceh", "category": "technical", "abbr": "CEH", "name": "Certified Ethical Hacker" },
+        { "id": "eccouncil-ceh-practical", "category": "technical", "abbr": "CEH Practical", "name": "Certified Ethical Hacker (Practical)" },
+        { "id": "eccouncil-ceh-master", "category": "technical", "abbr": "CEH (Master)", "name": "Certified Ethical Hacker (Master)" },
+        { "id": "eccouncil-chfi", "category": "technical", "abbr": "CHFI", "name": "Computer Hacking Forensic Investigator" },
+        { "id": "eccouncil-ecih", "category": "technical", "abbr": "ECIH", "name": "EC-Council Certified Incident Handler" },
+        { "id": "eccouncil-edrp", "category": "technical", "abbr": "EDRP", "name": "EC-Council Disaster Recovery Professional" },
+        { "id": "eccouncil-ctia", "category": "technical", "abbr": "CTIA", "name": "Certified Threat Intelligence Analyst" },
+        { "id": "eccouncil-case", "category": "technical", "abbr": "CASE", "name": "Certified Application Security Engineer（.NET、JAVA）" },
+        { "id": "eccouncil-cpent", "category": "technical", "abbr": "CPENT", "name": "Certified Penetration Testing Professional" },
+        { "id": "eccouncil-lpt-master", "category": "technical", "abbr": "LPT (Master)", "name": "Licensed Penetration Tester Master" },
+        { "id": "eccouncil-csa", "category": "technical", "abbr": "CSA", "name": "Certified SOC Analyst" }
+      ]
+    },
+    {
+      "id": "giac",
+      "name": "Global Information Assurance Certification (GIAC)",
+      "url": "https://www.giac.org/",
+      "certs": [
+        { "id": "giac-gslc", "category": "management", "group": "Management, Legal & Audit", "abbr": "GSLC", "name": "GIAC Security Leadership" },
+        { "id": "giac-gsna", "category": "management", "group": "Management, Legal & Audit", "abbr": "GSNA", "name": "GIAC Systems and Network Auditor Certification", "note": "僅限續證。" },
+        { "id": "giac-gleg", "category": "management", "group": "Management, Legal & Audit", "abbr": "GLEG", "name": "GIAC Law of Data Security & Investigations", "note": "僅限續證。" },
+        { "id": "giac-gstrt", "category": "management", "group": "Management, Legal & Audit", "abbr": "GSTRT", "name": "GIAC Strategic Planning, Policy, and Leadership" },
+        { "id": "giac-gisp", "category": "management", "group": "Management, Legal & Audit", "abbr": "GISP", "name": "GIAC Information Security Professional Certification" },
+        { "id": "giac-gccc", "category": "management", "group": "Management, Legal & Audit", "abbr": "GCCC", "name": "GIAC Critical Controls Certification" },
+
+        { "id": "giac-gcld", "category": "technical", "group": "Cloud Security", "abbr": "GCLD", "name": "GIAC Cloud Security Essentials Certification" },
+        { "id": "giac-gweb", "category": "technical", "group": "Cloud Security", "abbr": "GWEB", "name": "GIAC Certified Web Application Defender" },
+        { "id": "giac-gcsa", "category": "technical", "group": "Cloud Security", "abbr": "GCSA", "name": "GIAC Cloud Security Automation" },
+        { "id": "giac-gpcs", "category": "technical", "group": "Cloud Security", "abbr": "GPCS", "name": "GIAC Public Cloud Security" },
+
+        { "id": "giac-gosi", "category": "technical", "group": "Cyber Defense", "abbr": "GOSI", "name": "GIAC Open Source Intelligence Certification" },
+        { "id": "giac-gcia", "category": "technical", "group": "Cyber Defense", "abbr": "GCIA", "name": "GIAC Certified Intrusion Analyst Certification" },
+        { "id": "giac-gcwn", "category": "technical", "group": "Cyber Defense", "abbr": "GCWN", "name": "GIAC Certified Windows Security Administrator", "note": "僅限續證。" },
+        { "id": "giac-gmon", "category": "technical", "group": "Cyber Defense", "abbr": "GMON", "name": "GIAC Continuous Monitoring Certification" },
+        { "id": "giac-gdsa", "category": "technical", "group": "Cyber Defense", "abbr": "GDSA", "name": "GIAC Defensible Security Architecture Certification" },
+        { "id": "giac-gcda", "category": "technical", "group": "Cyber Defense", "abbr": "GCDA", "name": "GIAC Certified Detection Analyst" },
+        { "id": "giac-gsoc", "category": "technical", "group": "Cyber Defense", "abbr": "GSOC", "name": "GIAC Security Operations Certified" },
+        { "id": "giac-gisf", "category": "technical", "group": "Cyber Defense", "abbr": "GISF", "name": "GIAC Information Security Fundamentals" },
+        { "id": "giac-gsec", "category": "technical", "group": "Cyber Defense", "abbr": "GSEC", "name": "GIAC Security Essentials" },
+        { "id": "giac-gced", "category": "technical", "group": "Cyber Defense", "abbr": "GCED", "name": "GIAC Certified Enterprise Defender" },
+        { "id": "giac-gcih", "category": "technical", "group": "Cyber Defense", "abbr": "GCIH", "name": "GIAC Certified Incident Handler Certification" },
+        { "id": "giac-gfact", "category": "technical", "group": "Cyber Defense", "abbr": "GFACT", "name": "GIAC Foundational Cybersecurity Technologies" },
+        { "id": "giac-gdat", "category": "technical", "group": "Cyber Defense", "abbr": "GDAT", "name": "GIAC Defending Advanced Threats" },
+        { "id": "giac-gpyc", "category": "technical", "group": "Cyber Defense", "abbr": "GPYC", "name": "GIAC Python Coder" },
+
+        { "id": "giac-geva", "category": "technical", "group": "Offensive Operations", "abbr": "GEVA", "name": "GIAC Enterprise Vulnerability Assessor Certification", "note": "僅限續證。" },
+        { "id": "giac-gpen", "category": "technical", "group": "Offensive Operations", "abbr": "GPEN", "name": "GIAC Penetration Tester Certification" },
+        { "id": "giac-gwapt", "category": "technical", "group": "Offensive Operations", "abbr": "GWAPT", "name": "GIAC Web Application Penetration Tester" },
+        { "id": "giac-gmob", "category": "technical", "group": "Offensive Operations", "abbr": "GMOB", "name": "GIAC Mobile Device Security Analyst" },
+        { "id": "giac-gcpn", "category": "technical", "group": "Offensive Operations", "abbr": "GCPN", "name": "GIAC Cloud Penetration Tester" },
+        { "id": "giac-gawn", "category": "technical", "group": "Offensive Operations", "abbr": "GAWN", "name": "GIAC Assessing and Auditing Wireless Networks" },
+        { "id": "giac-gxpn", "category": "technical", "group": "Offensive Operations", "abbr": "GXPN", "name": "GIAC Exploit Researcher and Advanced Penetration Tester" },
+
+        { "id": "giac-gbfa", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GBFA", "name": "GIAC Battlefield Forensics & Acquisition" },
+        { "id": "giac-gcfe", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GCFE", "name": "GIAC Certified Forensic Examiner" },
+        { "id": "giac-gasf", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GASF", "name": "GIAC Advanced Smartphone Forensic Certification" },
+        { "id": "giac-gcfa", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GCFA", "name": "GIAC Certified Forensic Analyst" },
+        { "id": "giac-gnfa", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GNFA", "name": "GIAC Network Forensic Analyst" },
+        { "id": "giac-gcti", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GCTI", "name": "GIAC Cyber Threat Intelligence" },
+        { "id": "giac-grem", "category": "technical", "group": "Digital Forensics and Incident Response", "abbr": "GREM", "name": "GIAC Reverse Engineering Malware Certification" },
+
+        { "id": "giac-gicsp", "category": "technical", "group": "Industrial Control Systems", "abbr": "GICSP", "name": "GIAC Global Industrial Cyber Security Professional Certification" },
+        { "id": "giac-grid", "category": "technical", "group": "Industrial Control Systems", "abbr": "GRID", "name": "GIAC Response and Industrial Defense" },
+        { "id": "giac-gcip", "category": "technical", "group": "Industrial Control Systems", "abbr": "GCIP", "name": "GIAC Critical Infrastructure Protection Certification" },
+
+        { "id": "giac-gse", "category": "technical", "group": "Portfolio Certification", "abbr": "GSE", "name": "GIAC Security Expert" }
+      ]
+    },
+    {
+      "id": "isaca",
+      "name": "Information Systems Audit and Control Association (ISACA)",
+      "url": "https://www.isaca.org/",
+      "certs": [
+        { "id": "isaca-cism", "category": "management", "abbr": "CISM", "name": "Certified Information Security Manager" },
+        { "id": "isaca-cgeit", "category": "management", "abbr": "CGEIT", "name": "Certified in the Governance of Enterprise IT" },
+        { "id": "isaca-cisa", "category": "management", "abbr": "CISA", "name": "Certified Information Systems Auditor" },
+        { "id": "isaca-crisc", "category": "management", "abbr": "CRISC", "name": "Certified in Risk and Information Systems Control" }
+      ]
+    },
+    {
+      "id": "isfce",
+      "name": "The International Society of Forensic Computer Examiners (ISFCE)",
+      "url": "https://www.isfce.com/",
+      "certs": [
+        { "id": "isfce-cce", "category": "technical", "abbr": "CCE", "name": "Certified Computer Examiner" }
+      ]
+    },
+    {
+      "id": "offsec",
+      "name": "OffSec",
+      "url": "https://www.offsec.com/",
+      "certs": [
+        { "id": "offsec-oscp", "category": "technical", "abbr": "OSCP", "name": "OffSec Certified Professional" },
+        { "id": "offsec-osce", "category": "technical", "abbr": "OSCE", "name": "Offensive Security Certified Expert" },
+        { "id": "offsec-oswp", "category": "technical", "abbr": "OSWP", "name": "OffSec Wireless Professional" },
+        { "id": "offsec-osee", "category": "technical", "abbr": "OSEE", "name": "OffSec Exploitation Expert" },
+        { "id": "offsec-oswe", "category": "technical", "abbr": "OSWE", "name": "OffSec Web Expert" },
+        { "id": "offsec-osed", "category": "technical", "abbr": "OSED", "name": "OffSec Exploit Developer" },
+        { "id": "offsec-osep", "category": "technical", "abbr": "OSEP", "name": "OffSec Experienced Penetration Tester" },
+        { "id": "offsec-osce3", "category": "technical", "abbr": "OSCE3", "name": "OffSec Certified Expert 3" },
+        { "id": "offsec-oscp-plus", "category": "technical", "abbr": "OSCP+", "name": "OffSec Certified Professional (OSCP+)" }
+      ]
+    },
+    {
+      "id": "cisco",
+      "name": "Cisco",
+      "url": "https://www.cisco.com",
+      "certs": [
+        { "id": "cisco-ccna", "category": "technical", "abbr": "CCNA", "name": "Cisco Certified Network Associate" },
+        { "id": "cisco-ccca", "category": "technical", "abbr": "CyberOps Associate", "name": "Cisco Certified Cybersecurity Associate", "note": "原名稱為 Cisco Certified CyberOps Associate，將於 117 年 1 月 20 日（2028-01-20）後停止採認。" }
+      ]
+    },
+    {
+      "id": "moea-ipas",
+      "name": "經濟部（iPAS）",
+      "url": "https://www.ipas.org.tw/ise",
+      "certs": [
+        { "id": "ipas-ise-mid", "category": "technical", "abbr": "iPAS", "name": "iPAS 資訊安全工程師中級能力鑑定" }
+      ]
+    },
+    {
+      "id": "isa",
+      "name": "International Society of Automation (ISA)",
+      "url": "https://www.isa.org/",
+      "certs": [
+        { "id": "isa-62443-fundamentals", "category": "management", "abbr": "—", "name": "ISA/IEC 62443 Cybersecurity Fundamentals Specialist" },
+        { "id": "isa-62443-risk-assessment", "category": "management", "abbr": "—", "name": "ISA/IEC 62443 Cybersecurity Risk Assessment Specialist" },
+        { "id": "isa-62443-design", "category": "technical", "abbr": "—", "name": "ISA/IEC 62443 Cybersecurity Design Specialist" },
+        { "id": "isa-62443-maintenance", "category": "technical", "abbr": "—", "name": "ISA/IEC 62443 Cybersecurity Maintenance Specialist" },
+        { "id": "isa-62443-expert", "category": "technical", "abbr": "—", "name": "ISA/IEC 62443 Cybersecurity Expert" }
+      ]
+    },
+    {
+      "id": "htb",
+      "name": "Hack The Box (HTB)",
+      "url": "https://academy.hackthebox.com/",
+      "certs": [
+        { "id": "htb-cdsa", "category": "technical", "abbr": "HTB CDSA", "name": "HTB Certified Defensive Security Analyst" },
+        { "id": "htb-cpts", "category": "technical", "abbr": "HTB CPTS", "name": "HTB Certified Penetration Testing Specialist" }
+      ]
+    },
+    {
+      "id": "cyber-ab",
+      "name": "The Cyber AB",
+      "url": "https://cyberab.org/",
+      "certs": [
+        { "id": "cyberab-ccp", "category": "management", "abbr": "CCP", "name": "CMMC Certified Professional" },
+        { "id": "cyberab-cca", "category": "management", "abbr": "CCA", "name": "CMMC Certified Assessor" }
+      ]
+    }
+  ]
+}

@@ -460,6 +460,80 @@
   .cta:hover { opacity: .75; }
   .cta.mute { color: var(--ink-3); font-weight: 500; border-bottom-style: dotted; }
 
+  /* ---------- official certs lookup ---------- */
+
+  .official { display: flex; flex-direction: column; gap: 18px; padding-top: 8px; border-top: 2px solid var(--ink); }
+  .official-head h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: -0.01em; }
+  .official-head .subtitle { margin: 0; }
+
+  .official-search {
+    font: inherit;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 6px 14px;
+    min-width: 220px;
+    flex: 1 1 220px;
+  }
+
+  .official-search:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .official-issuer {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .official-issuer h3 { margin: 0 0 4px; font-size: 14.5px; }
+  .official-issuer h3 a { color: var(--ink); text-decoration: none; }
+  .official-issuer h3 a:hover { color: var(--accent); }
+  .official-issuer .count { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); margin-bottom: 10px; display: block; }
+
+  .official-certs { display: flex; flex-direction: column; }
+
+  .official-cert-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    font-size: 13.5px;
+    padding: 7px 0;
+    border-top: 1px dashed var(--line);
+  }
+
+  .official-cert-row:first-child { border-top: none; }
+
+  .official-cert-abbr {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 2px;
+    padding: 1px 7px;
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+
+  .official-cat-tag {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    padding: 1px 6px;
+    border-radius: 2px;
+    border: 1px solid var(--line-strong);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .official-cat-tag.management { border-color: var(--accent); color: var(--accent); }
+
+  .official-cert-group { font-size: 11px; color: var(--ink-3); white-space: nowrap; }
+  .official-cert-note { flex-basis: 100%; font-size: 12px; color: var(--warn); }
+
   /* ---------- contribute banner ---------- */
 
   .contribute {
@@ -632,6 +706,21 @@
 
   <main id="list"><p class="empty">載入中…</p></main>
 
+  <section class="official" id="official">
+    <div class="official-head">
+      <h2>官方認可資安證照查詢</h2>
+      <p class="subtitle">數位發展部資通安全署公告的「資通安全專職(責)人員」法定認可證照清單，共 14 個發證機構、106 張證照（<span id="official-updated">—</span> 版）。跟上面的課程雷達是兩份不同的資料：這裡是「哪些證照被官方認可」，上面是「這些證照/課程哪裡可以上」。</p>
+    </div>
+    <div class="toolbar">
+      <span class="toolbar-label">篩選</span>
+      <button class="chip" data-official-filter="all" aria-pressed="true">全部</button>
+      <button class="chip" data-official-filter="management" aria-pressed="false">管理類</button>
+      <button class="chip" data-official-filter="technical" aria-pressed="false">技術類</button>
+      <input type="search" id="official-search" class="official-search" placeholder="搜尋證照名稱、縮寫或發證機構…">
+    </div>
+    <div id="official-list"><p class="empty">載入中…</p></div>
+  </section>
+
   <footer>
     <h3>三種標籤怎麼分</h3>
     <ul>
@@ -660,6 +749,11 @@
       <li>資料整理日 <b id="data-updated">—</b>，來源：各主辦單位官網／報名頁。伊雲谷兩門課來自宣傳圖，官網未見公開報名頁，需洽業務窗口確認。SGS 3 日班價格取自 104 學習平台標示。</li>
       <li>官網入口：<a href="https://www.startup.taipei/index.php?action=course&amp;cid=83" target="_blank" rel="noopener">臺北市中小企業知識學苑</a>、<a href="https://isokm.com.tw/event/category/68" target="_blank" rel="noopener">領導力 ISO 管理學院</a>、<a href="https://ainetwork-training.com/courses/" target="_blank" rel="noopener">全智網</a>、<a href="https://www.ares-registration.com/?sub=news&amp;cat=course-information" target="_blank" rel="noopener">亞瑞仕</a>、<a href="https://edu.cpc.org.tw/class/content/303" target="_blank" rel="noopener">中國生產力中心</a>、<a href="https://www.caa.org.tw/coursedetail-37002.html" target="_blank" rel="noopener">電腦稽核協會</a>、<a href="https://www.tpipas.org.tw/course_list.aspx?no=118" target="_blank" rel="noopener">TPIPAS</a>。</li>
       <li>這頁由 GitHub 共同維護：改 <code>data/courses.json</code> → 開 Pull Request → 通過自動檢查並被 review → 合併後自動上線。</li>
+    </ul>
+    <h3>官方認可證照清單的資料來源</h3>
+    <ul>
+      <li>「官方認可資安證照查詢」的內容整理自數位發展部資通安全署公告的《資通安全專業證照清單》PDF，不是本站原創資料，最新版本請以 <a href="https://moda.gov.tw/" target="_blank" rel="noopener">數位發展部</a>資通安全署網站公告為準，有疑問可洽 (02-2380-8500)。</li>
+      <li>27001／27701 主導稽核員在這份官方清單裡是有列的（第 1 項）；但目前課程雷達上的 27017・27018 雲端、42001 AI 這兩類，<b>並不在這份官方認可清單中</b> — 上這些課仍然學得到東西、拿得到證書，但不能拿來滿足「資通安全專職(責)人員」的法定證照要求。</li>
     </ul>
   </footer>
 
@@ -821,10 +915,10 @@
     }).join("");
   }
 
-  document.querySelectorAll(".chip").forEach(btn => {
+  document.querySelectorAll(".chip[data-filter]").forEach(btn => {
     btn.addEventListener("click", () => {
       activeFilter = btn.dataset.filter;
-      document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      document.querySelectorAll(".chip[data-filter]").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
       render();
     });
   });
@@ -881,6 +975,70 @@
   window.showCoursesError = (message) => {
     listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
   };
+
+  // ---------- 官方認可資安證照查詢（獨立於上面的課程雷達資料） ----------
+  let OFFICIAL = { issuers: [] };
+  let officialFilter = "all";
+  let officialQuery = "";
+  const officialListEl = document.getElementById("official-list");
+
+  function renderOfficial() {
+    const q = officialQuery.trim().toLowerCase();
+    const blocks = OFFICIAL.issuers.map(issuer => {
+      const certs = issuer.certs.filter(c => {
+        if (officialFilter !== "all" && c.category !== officialFilter) return false;
+        if (!q) return true;
+        return `${c.name} ${c.abbr} ${issuer.name}`.toLowerCase().includes(q);
+      });
+      if (!certs.length) return "";
+      return `
+        <div class="official-issuer">
+          <h3><a href="${esc(issuer.url)}" target="_blank" rel="noopener">${esc(issuer.name)}</a></h3>
+          <span class="count">${certs.length} 張</span>
+          <div class="official-certs">
+            ${certs.map(c => `
+              <div class="official-cert-row">
+                <span class="official-cat-tag ${c.category}">${c.category === "management" ? "管理類" : "技術類"}</span>
+                ${c.abbr && c.abbr !== "—" ? `<span class="official-cert-abbr">${esc(c.abbr)}</span>` : ""}
+                <span>${esc(c.name)}</span>
+                ${c.group ? `<span class="official-cert-group">・${esc(c.group)}</span>` : ""}
+                ${c.note ? `<span class="official-cert-note">⚠️ ${esc(c.note)}</span>` : ""}
+              </div>`).join("")}
+          </div>
+        </div>`;
+    }).filter(Boolean).join("");
+
+    officialListEl.innerHTML = blocks || `<p class="empty">沒有符合條件的證照，換個關鍵字或篩選試試。</p>`;
+  }
+
+  document.querySelectorAll("[data-official-filter]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      officialFilter = btn.dataset.officialFilter;
+      document.querySelectorAll("[data-official-filter]").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      renderOfficial();
+    });
+  });
+
+  document.getElementById("official-search").addEventListener("input", (e) => {
+    officialQuery = e.target.value;
+    renderOfficial();
+  });
+
+  fetch("data/official-certs.json", { cache: "no-store" })
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    })
+    .then(payload => {
+      OFFICIAL = payload;
+      if (payload.meta && payload.meta.version) {
+        document.getElementById("official-updated").textContent = payload.meta.version;
+      }
+      renderOfficial();
+    })
+    .catch(err => {
+      officialListEl.innerHTML = `<p class="empty error">官方證照清單載入失敗（${esc(err.message)}）。</p>`;
+    });
 </script>
 
 <script type="module">
