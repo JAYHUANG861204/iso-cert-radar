@@ -146,6 +146,15 @@
 
   .user-chip button:hover { color: var(--ink); border-color: var(--accent); }
 
+  .user-chip .sync-btn {
+    color: var(--accent);
+    border: 1px dashed var(--accent);
+    border-radius: 999px;
+  }
+
+  .user-chip .sync-btn:hover { background: var(--accent-soft); }
+  .user-chip .sync-btn:disabled { opacity: .55; cursor: default; }
+
   /* ---------- KPI row ---------- */
 
   .kpis {
@@ -840,32 +849,38 @@
     }
   })();
 
-  fetch("data/courses.json", { cache: "no-store" })
-    .then(r => {
+  // 套用一份課程資料（不管是從 Firestore 還是靜態 JSON 來的）並重新畫面。
+  // 掛在 window 上是因為下面那個 Firestore 的 <script type="module"> 需要呼叫它，
+  // 但 module 跟一般 script 的頂層變數不共用作用域。
+  function applyCourses(payload) {
+    COURSES = payload.courses;
+    if (payload.meta && payload.meta.updated) {
+      document.getElementById("data-updated").textContent = payload.meta.updated;
+    }
+    COURSES.forEach(c => {
+      c.startD = parse(c.start);
+      c.endD = parse(c.end);
+      c.deadlineD = c.deadline ? parse(c.deadline) : null;
+      c.dStart = daysTo(c.startD);
+      c.dDeadline = c.deadlineD ? daysTo(c.deadlineD) : null;
+      c.past = daysTo(c.endD) < 0;
+      c.certLv = certOf(c);
+    });
+    COURSES.sort((a, b) => a.startD - b.startD);
+    renderKpis();
+    render();
+  }
+  window.applyCourses = applyCourses;
+
+  window.loadStaticCourses = () =>
+    fetch("data/courses.json", { cache: "no-store" }).then(r => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
-    })
-    .then(payload => {
-      COURSES = payload.courses;
-      if (payload.meta && payload.meta.updated) {
-        document.getElementById("data-updated").textContent = payload.meta.updated;
-      }
-      COURSES.forEach(c => {
-        c.startD = parse(c.start);
-        c.endD = parse(c.end);
-        c.deadlineD = c.deadline ? parse(c.deadline) : null;
-        c.dStart = daysTo(c.startD);
-        c.dDeadline = c.deadlineD ? daysTo(c.deadlineD) : null;
-        c.past = daysTo(c.endD) < 0;
-        c.certLv = certOf(c);
-      });
-      COURSES.sort((a, b) => a.startD - b.startD);
-      renderKpis();
-      render();
-    })
-    .catch(err => {
-      listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(err.message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
     });
+
+  window.showCoursesError = (message) => {
+    listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
+  };
 </script>
 
 <script type="module">
@@ -874,7 +889,7 @@
     getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import {
-    getFirestore, doc, getDoc
+    getFirestore, doc, getDoc, collection, getDocs, writeBatch
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -915,6 +930,49 @@
   }
   gateSignInBtn.addEventListener("click", doSignIn);
 
+  // ---------- 課程資料：Firestore 優先，空的話退回靜態 JSON ----------
+  async function loadStaticCategories(){
+    const res = await fetch("data/categories.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  async function bootstrapCourses(){
+    try {
+      const snap = await getDocs(collection(db, "iso_courses"));
+      if (!snap.empty) {
+        const courses = snap.docs.map(d => d.data());
+        let updated = null;
+        try {
+          const metaSnap = await getDoc(doc(db, "iso_meta", "courses"));
+          if (metaSnap.exists()) updated = metaSnap.data().updated;
+        } catch { /* 讀不到 meta 就算了，不影響課程本身 */ }
+        window.applyCourses({ courses, meta: { updated } });
+        return;
+      }
+    } catch (err) {
+      console.warn("讀取 Firestore 課程資料失敗，改用靜態資料：", err.message);
+    }
+    window.applyCourses(await window.loadStaticCourses());
+  }
+
+  bootstrapCourses().catch(err => window.showCoursesError(err.message));
+
+  async function syncCoursesToFirestore(){
+    const [payload, cats] = await Promise.all([window.loadStaticCourses(), loadStaticCategories()]);
+    const batch = writeBatch(db);
+    payload.courses.forEach(c => batch.set(doc(db, "iso_courses", c.id), c));
+    cats.cats.forEach(c => batch.set(doc(db, "iso_categories", c.id), c));
+    cats.certLevels.forEach(c => batch.set(doc(db, "iso_cert_levels", c.id), c));
+    batch.set(doc(db, "iso_meta", "courses"), {
+      updated: payload.meta.updated,
+      syncedAt: new Date().toISOString(),
+      syncedBy: auth.currentUser?.email || null,
+    });
+    await batch.commit();
+    await bootstrapCourses();
+  }
+
   const GOOGLE_G_ICON = `<svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
     <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.3-.1-2.7-.4-3.5z"/>
     <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.6 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
@@ -950,9 +1008,24 @@
       <div class="user-chip">
         <img src="${user.photoURL || ""}" alt="">
         <span>${user.displayName || user.email}</span>
+        <button class="sync-btn" id="syncBtn">同步資料到資料庫</button>
         <button id="signOutBtn">登出</button>
       </div>`;
     document.getElementById("signOutBtn").addEventListener("click", () => signOut(auth));
+    document.getElementById("syncBtn").addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      btn.textContent = "同步中…";
+      try {
+        await syncCoursesToFirestore();
+        btn.textContent = "✓ 已同步";
+      } catch (err) {
+        alert("同步失敗：" + err.message);
+        btn.textContent = "同步資料到資料庫";
+      } finally {
+        btn.disabled = false;
+      }
+    });
     gateEl.hidden = true;
     protectedEl.hidden = false;
   }

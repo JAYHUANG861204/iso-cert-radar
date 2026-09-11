@@ -1,0 +1,18 @@
+{
+  "cats": [
+    { "id": "27001", "label": "27001 資安", "description": "ISO/IEC 27001 資訊安全管理系統相關課程。" },
+    { "id": "27701", "label": "27701 隱私", "description": "ISO/IEC 27701 隱私資訊管理系統相關課程。" },
+    { "id": "cloud", "label": "27017・27018 雲端", "description": "雲端服務資安控制措施與雲端個資保護相關課程。" },
+    { "id": "42001", "label": "42001 AI", "description": "ISO/IEC 42001 人工智慧管理系統相關課程。" },
+    { "id": "pdpa", "label": "個資", "description": "個人資料保護法與個資管理相關課程。" },
+    { "id": "short", "label": "短天數 1–3 天", "description": "課程長度在 1 到 3 天之間，適合快速取得基礎資格。" },
+    { "id": "free", "label": "免費／補助", "description": "免費或政府補助的課程。" }
+  ],
+  "certLevels": [
+    { "id": "irca", "label": "🏅 國際登錄證照", "description": "CQI & IRCA 登錄，可註冊為第三方稽核員，40 小時＋筆試。" },
+    { "id": "iso", "label": "📜 ISO 稽核員證書", "description": "由訓練或驗證機構核發，可作為驗證時的內稽訓練佐證。" },
+    { "id": "pro", "label": "📜 個資管理師證照", "description": "個人資料管理師相關證照。" },
+    { "id": "unknown", "label": "❓ 發證待確認", "description": "發證等級尚未確認，報名前建議先洽詢主辦單位。" },
+    { "id": "none", "label": "📘 補知識・不發證照", "description": "結業證書或研習證明，不構成任何稽核員資格。" }
+  ]
+}
