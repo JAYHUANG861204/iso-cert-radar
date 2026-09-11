@@ -102,6 +102,50 @@
 
   .stamp b { color: var(--ink); font-weight: 600; }
 
+  .masthead-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+
+  .auth-btn {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .04em;
+    color: var(--accent);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    padding: 7px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+
+  .auth-btn:hover { background: var(--accent-soft); }
+  .auth-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .user-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .user-chip img { width: 22px; height: 22px; border-radius: 50%; }
+
+  .user-chip button {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-2);
+    background: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    padding: 3px 9px;
+    cursor: pointer;
+  }
+
+  .user-chip button:hover { color: var(--ink); border-color: var(--accent); }
+
   /* ---------- KPI row ---------- */
 
   .kpis {
@@ -472,7 +516,10 @@
         <h1>資安證照課程雷達</h1>
         <p class="subtitle">ISO 27001／27701／27017・27018／42001 與個資管理的稽核員培訓開課清單。每天打開看一眼，別讓早鳥價和報名截止日溜掉。</p>
       </div>
-      <div class="stamp">今天 <b id="today">—</b></div>
+      <div class="masthead-side">
+        <div class="stamp">今天 <b id="today">—</b></div>
+        <div id="authBox"></div>
+      </div>
     </div>
 
     <div class="kpis">
@@ -777,6 +824,60 @@
     .catch(err => {
       listEl.innerHTML = `<p class="empty error">課程資料載入失敗（${esc(err.message)}）。<br>如果你是直接用 file:// 打開這個檔，瀏覽器會擋住讀取 JSON — 請改用 <code>npm start</code> 或看線上版。</p>`;
     });
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA2l02nVhOF7QovoQAn2NfoL5HvI7x1Y90",
+    authDomain: "iso-cert--radar.firebaseapp.com",
+    projectId: "iso-cert--radar",
+    storageBucket: "iso-cert--radar.firebasestorage.app",
+    messagingSenderId: "70661723775",
+    appId: "1:70661723775:web:d8291ad567ae1d45e9514a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const authBox = document.getElementById("authBox");
+
+  const GOOGLE_G_ICON = `<svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
+    <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.3-.1-2.7-.4-3.5z"/>
+    <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.6 19 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+    <path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.4l-6.3-5.2C29.4 35.4 26.8 36.3 24 36.3c-5.2 0-9.6-3.5-11.2-8.3l-6.5 5C9.6 39.6 16.2 44 24 44z"/>
+    <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.3 5.2C40.9 36 44 30.6 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+  </svg>`;
+
+  function renderSignedOut(){
+    authBox.innerHTML = `<button class="auth-btn" id="signInBtn">${GOOGLE_G_ICON}使用 Google 登入</button>`;
+    document.getElementById("signInBtn").addEventListener("click", () => {
+      signInWithPopup(auth, provider).catch(err => {
+        if (err.code !== "auth/popup-closed-by-user") {
+          alert("登入失敗：" + err.message);
+        }
+      });
+    });
+  }
+
+  function renderSignedIn(user){
+    authBox.innerHTML = `
+      <div class="user-chip">
+        <img src="${user.photoURL || ""}" alt="">
+        <span>${user.displayName || user.email}</span>
+        <button id="signOutBtn">登出</button>
+      </div>`;
+    document.getElementById("signOutBtn").addEventListener("click", () => signOut(auth));
+  }
+
+  onAuthStateChanged(auth, user => {
+    if (user) renderSignedIn(user);
+    else renderSignedOut();
+  });
 </script>
 
 </body>
