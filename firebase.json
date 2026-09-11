@@ -1,4 +1,7 @@
 {
+  "firestore": {
+    "rules": "firestore.rules"
+  },
   "hosting": {
     "site": "iso-cert--radar",
     "public": ".",
@@ -13,7 +16,8 @@
       ".github/**",
       "CONTRIBUTING.md",
       "README.md",
-      "package.json"
+      "package.json",
+      "firestore.rules"
     ]
   }
 }

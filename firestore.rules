@@ -1,0 +1,62 @@
+rules_version = '2';
+
+// RBAC：角色清單存在 config/access 的 roles map 裡（email(小寫) -> "editor" | "viewer"）。
+// 這份文件本身禁止任何角色透過 App 寫入，只能由專案管理者在 Firebase Console 手動編輯，
+// 避免任何登入者透過用戶端 SDK 幫自己加名單、自我提權。
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedInEmail() {
+      return request.auth.token.email.lower();
+    }
+
+    function myRole() {
+      return get(/databases/$(database)/documents/config/access).data.roles.get(signedInEmail(), null);
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email != null;
+    }
+
+    function isViewerOrAbove() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/config/access)
+        && myRole() in ['viewer', 'editor'];
+    }
+
+    function isEditor() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/config/access)
+        && myRole() == 'editor';
+    }
+
+    match /config/access {
+      allow read: if isViewerOrAbove();
+      allow write: if false;
+    }
+
+    match /iso_courses/{docId} {
+      allow read: if isViewerOrAbove();
+      allow write: if isEditor();
+    }
+
+    match /iso_categories/{docId} {
+      allow read: if isViewerOrAbove();
+      allow write: if isEditor();
+    }
+
+    match /iso_cert_levels/{docId} {
+      allow read: if isViewerOrAbove();
+      allow write: if isEditor();
+    }
+
+    match /iso_meta/{docId} {
+      allow read: if isViewerOrAbove();
+      allow write: if isEditor();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
