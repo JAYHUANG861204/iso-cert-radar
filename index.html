@@ -1074,7 +1074,7 @@
   // 這些文件本身禁止任何角色透過 App 寫入（見 firestore.rules），只能在 Console 手動改。
   async function getRole(email){
     if (!email) return null;
-    const snap = await getDoc(doc(db, "users", email.toLowerCase()));
+    const snap = await getDoc(doc(db, "userid", email.toLowerCase()));
     if (!snap.exists()) return null;
     return snap.data().role || null;
   }

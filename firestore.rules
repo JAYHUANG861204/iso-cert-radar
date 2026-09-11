@@ -15,23 +15,23 @@ service cloud.firestore {
     }
 
     function myRole() {
-      return get(/databases/$(database)/documents/users/$(signedInEmail())).data.role;
+      return get(/databases/$(database)/documents/userid/$(signedInEmail())).data.role;
     }
 
     function isViewerOrAbove() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(signedInEmail()))
+        && exists(/databases/$(database)/documents/userid/$(signedInEmail()))
         && myRole() in ['viewer', 'editor'];
     }
 
     function isEditor() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/users/$(signedInEmail()))
+        && exists(/databases/$(database)/documents/userid/$(signedInEmail()))
         && myRole() == 'editor';
     }
 
     // 每個人只能讀自己那筆（用來確認自己的角色），不能讀別人的，也不能透過 App 寫入。
-    match /users/{userId} {
+    match /userid/{userId} {
       allow read: if isSignedIn() && userId == signedInEmail();
       allow write: if false;
     }
