@@ -1069,15 +1069,14 @@
   const gateSignInBtn = document.getElementById("gateSignInBtn");
   const protectedEl = document.getElementById("protected");
 
-  // 角色清單存在 Firestore 的 config/access 文件裡（roles map：email(小寫) -> "editor"|"viewer"），
-  // 不寫死在程式碼裡；要改名單直接去 Firebase Console 的 Firestore 資料頁簽編輯即可。
-  // 這份文件本身禁止任何角色透過 App 寫入（見 firestore.rules），只能在 Console 手動改。
+  // 角色清單存在 Firestore 的 users/{email} 文件裡（欄位 email + role："editor"|"viewer"），
+  // 不寫死在程式碼裡；要改名單直接去 Firebase Console 的 Firestore 資料頁簽新增/編輯即可。
+  // 這些文件本身禁止任何角色透過 App 寫入（見 firestore.rules），只能在 Console 手動改。
   async function getRole(email){
     if (!email) return null;
-    const snap = await getDoc(doc(db, "config", "access"));
+    const snap = await getDoc(doc(db, "users", email.toLowerCase()));
     if (!snap.exists()) return null;
-    const roles = snap.data().roles || {};
-    return roles[email.toLowerCase()] || null;
+    return snap.data().role || null;
   }
 
   function doSignIn(){

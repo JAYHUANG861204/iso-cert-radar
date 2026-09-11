@@ -1,7 +1,7 @@
 rules_version = '2';
 
-// RBAC：角色清單存在 config/access 的 roles map 裡（email(小寫) -> "editor" | "viewer"）。
-// 這份文件本身禁止任何角色透過 App 寫入，只能由專案管理者在 Firebase Console 手動編輯，
+// RBAC：每個人一筆文件放在 users/{email}，欄位 email + role（"editor" | "viewer"）。
+// users 文件本身禁止任何角色透過 App 寫入，只能由專案管理者在 Firebase Console 手動新增/編輯，
 // 避免任何登入者透過用戶端 SDK 幫自己加名單、自我提權。
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -10,28 +10,29 @@ service cloud.firestore {
       return request.auth.token.email.lower();
     }
 
-    function myRole() {
-      return get(/databases/$(database)/documents/config/access).data.roles.get(signedInEmail(), null);
-    }
-
     function isSignedIn() {
       return request.auth != null && request.auth.token.email != null;
     }
 
+    function myRole() {
+      return get(/databases/$(database)/documents/users/$(signedInEmail())).data.role;
+    }
+
     function isViewerOrAbove() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/config/access)
+        && exists(/databases/$(database)/documents/users/$(signedInEmail()))
         && myRole() in ['viewer', 'editor'];
     }
 
     function isEditor() {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/config/access)
+        && exists(/databases/$(database)/documents/users/$(signedInEmail()))
         && myRole() == 'editor';
     }
 
-    match /config/access {
-      allow read: if isViewerOrAbove();
+    // 每個人只能讀自己那筆（用來確認自己的角色），不能讀別人的，也不能透過 App 寫入。
+    match /users/{userId} {
+      allow read: if isSignedIn() && userId == signedInEmail();
       allow write: if false;
     }
 
