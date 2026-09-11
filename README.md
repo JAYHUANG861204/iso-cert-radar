@@ -29,6 +29,7 @@ ISO 27001／27701／27017・27018／42001 與個資管理的**稽核員培訓開
 | **看課程** | 直接開 [線上版](https://jayhuang861204.github.io/iso-cert-radar/) |
 | **改資料 / 補一梯新的** | 讀 [CONTRIBUTING.md](CONTRIBUTING.md) |
 | **回報但不想自己改** | 開一個 [Issue](../../issues/new/choose) |
+| **看權限怎麼設定的 / 加減人** | 讀 [docs/rbac.md](docs/rbac.md) |
 
 ---
 
@@ -38,6 +39,7 @@ ISO 27001／27701／27017・27018／42001 與個資管理的**稽核員培訓開
 iso-cert-radar/
 ├── index.html              網頁本身（版面與邏輯）
 ├── data/courses.json       ⭐ 課程資料 — 平常只會動到這個檔
+├── firestore.rules         Firestore 權限規則（見 docs/rbac.md）
 ├── scripts/validate.mjs    資料檢查器，CI 會跑
 └── .github/workflows/
     ├── validate.yml        CI：每個 PR 自動檢查資料格式
