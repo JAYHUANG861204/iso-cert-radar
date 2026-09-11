@@ -521,7 +521,9 @@
 
   .gate-card h1 { margin: 0; font-size: 26px; }
   .gate-card p { color: var(--ink-2); font-size: 14px; line-height: 1.6; margin: 0; max-width: 32ch; }
+  .gate-card p.denied { color: var(--crit); font-weight: 600; }
   .gate-card .auth-btn { margin-top: 6px; font-size: 14px; padding: 10px 22px 10px 16px; }
+  .gate-card .auth-btn[disabled] { opacity: .5; cursor: default; }
 
   @media (max-width: 720px) {
     .row { grid-template-columns: 1fr; gap: 12px; }
@@ -541,7 +543,7 @@
   <div id="gate" class="gate-screen">
     <div class="gate-card">
       <h1>資安證照課程雷達</h1>
-      <p>需要用 Google 帳號登入並授權後，才能查看課程內容。</p>
+      <p id="gateMsg">需要用 Google 帳號登入並授權後，才能查看課程內容。</p>
       <button class="auth-btn" id="gateSignInBtn">使用 Google 登入</button>
     </div>
   </div>
@@ -871,6 +873,9 @@
   import {
     getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA2l02nVhOF7QovoQAn2NfoL5HvI7x1Y90",
@@ -883,10 +888,23 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
   const authBox = document.getElementById("authBox");
   const gateEl = document.getElementById("gate");
+  const gateMsg = document.getElementById("gateMsg");
+  const gateSignInBtn = document.getElementById("gateSignInBtn");
   const protectedEl = document.getElementById("protected");
+
+  // 白名單存在 Firestore 的 config/access 文件裡（emails 陣列），
+  // 不寫死在程式碼裡；要改名單直接去 Firebase Console 的 Firestore 資料頁簽編輯即可。
+  async function isAllowed(email){
+    if (!email) return false;
+    const snap = await getDoc(doc(db, "config", "access"));
+    if (!snap.exists()) return false;
+    const emails = snap.data().emails || [];
+    return emails.some(e => String(e).toLowerCase() === email.toLowerCase());
+  }
 
   function doSignIn(){
     signInWithPopup(auth, provider).catch(err => {
@@ -895,7 +913,7 @@
       }
     });
   }
-  document.getElementById("gateSignInBtn").addEventListener("click", doSignIn);
+  gateSignInBtn.addEventListener("click", doSignIn);
 
   const GOOGLE_G_ICON = `<svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
     <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.3-.1-2.7-.4-3.5z"/>
@@ -908,8 +926,23 @@
 
   function renderSignedOut(){
     authBox.innerHTML = "";
+    gateMsg.className = "";
+    gateMsg.textContent = "需要用 Google 帳號登入並授權後，才能查看課程內容。";
+    gateSignInBtn.hidden = false;
     gateEl.hidden = false;
     protectedEl.hidden = true;
+  }
+
+  let justDenied = false;
+
+  function renderDenied(user){
+    authBox.innerHTML = "";
+    gateMsg.className = "denied";
+    gateMsg.textContent = `${user.email} 沒有這個頁面的權限，請聯絡管理者把這個帳號加進白名單，或換一個帳號登入。`;
+    gateEl.hidden = false;
+    protectedEl.hidden = true;
+    justDenied = true;
+    signOut(auth);
   }
 
   function renderSignedIn(user){
@@ -924,9 +957,30 @@
     protectedEl.hidden = false;
   }
 
-  onAuthStateChanged(auth, user => {
-    if (user) renderSignedIn(user);
-    else renderSignedOut();
+  onAuthStateChanged(auth, async user => {
+    if (!user) {
+      if (justDenied) {
+        justDenied = false;
+      } else {
+        renderSignedOut();
+      }
+      return;
+    }
+    let allowed;
+    try {
+      allowed = await isAllowed(user.email);
+    } catch (err) {
+      gateMsg.className = "denied";
+      gateMsg.textContent = "驗證權限時發生錯誤，請稍後再試：" + err.message;
+      gateEl.hidden = false;
+      protectedEl.hidden = true;
+      return;
+    }
+    if (allowed) {
+      renderSignedIn(user);
+    } else {
+      renderDenied(user);
+    }
   });
 </script>
 
