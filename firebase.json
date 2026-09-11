@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "site": "iso-cert--radar",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      ".git/**",
+      ".firebase/**",
+      "**/.*",
+      "**/node_modules/**",
+      "scripts/**",
+      ".github/**",
+      "CONTRIBUTING.md",
+      "README.md",
+      "package.json"
+    ]
+  }
+}
