@@ -494,6 +494,7 @@
 
   .empty { padding: 40px 0; text-align: center; color: var(--ink-3); font-size: 14px; }
   .empty.error { color: var(--crit); }
+  #gate { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
   @media (max-width: 720px) {
     .row { grid-template-columns: 1fr; gap: 12px; }
@@ -522,7 +523,7 @@
       </div>
     </div>
 
-    <div class="kpis">
+    <div class="kpis" id="kpis" hidden>
       <div class="kpi">
         <span class="kpi-label">可報名梯次</span>
         <span class="kpi-value" id="kpi-open">—</span>
@@ -550,6 +551,13 @@
       </div>
     </div>
   </header>
+
+  <div id="gate" class="empty">
+    <p>登入後才能查看課程內容。</p>
+    <button class="auth-btn" id="gateSignInBtn">使用 Google 登入</button>
+  </div>
+
+  <div id="protected" hidden>
 
   <div class="contribute">
     <span>📝 <b>發現新梯次或資料有錯？</b>這頁的內容全部來自 <code>data/courses.json</code>，改那個檔就會改到這頁。</span>
@@ -613,6 +621,8 @@
       <li>這頁由 GitHub 共同維護：改 <code>data/courses.json</code> → 開 Pull Request → 通過自動檢查並被 review → 合併後自動上線。</li>
     </ul>
   </footer>
+
+  </div>
 </div>
 
 <script>
@@ -845,6 +855,18 @@
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const authBox = document.getElementById("authBox");
+  const gateEl = document.getElementById("gate");
+  const protectedEl = document.getElementById("protected");
+  const kpisEl = document.getElementById("kpis");
+
+  function doSignIn(){
+    signInWithPopup(auth, provider).catch(err => {
+      if (err.code !== "auth/popup-closed-by-user") {
+        alert("登入失敗：" + err.message);
+      }
+    });
+  }
+  document.getElementById("gateSignInBtn").addEventListener("click", doSignIn);
 
   const GOOGLE_G_ICON = `<svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
     <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.9 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.5 5.1 29.5 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.3-.1-2.7-.4-3.5z"/>
@@ -855,13 +877,10 @@
 
   function renderSignedOut(){
     authBox.innerHTML = `<button class="auth-btn" id="signInBtn">${GOOGLE_G_ICON}使用 Google 登入</button>`;
-    document.getElementById("signInBtn").addEventListener("click", () => {
-      signInWithPopup(auth, provider).catch(err => {
-        if (err.code !== "auth/popup-closed-by-user") {
-          alert("登入失敗：" + err.message);
-        }
-      });
-    });
+    document.getElementById("signInBtn").addEventListener("click", doSignIn);
+    gateEl.hidden = false;
+    protectedEl.hidden = true;
+    kpisEl.hidden = true;
   }
 
   function renderSignedIn(user){
@@ -872,6 +891,9 @@
         <button id="signOutBtn">登出</button>
       </div>`;
     document.getElementById("signOutBtn").addEventListener("click", () => signOut(auth));
+    gateEl.hidden = true;
+    protectedEl.hidden = false;
+    kpisEl.hidden = false;
   }
 
   onAuthStateChanged(auth, user => {
